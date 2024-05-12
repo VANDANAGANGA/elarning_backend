@@ -97,15 +97,19 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/4.1/ref/settings/#databases
 
-DATABASES = {
-     'default': {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": "e_learning",
-        "USER": "postgres",
-        "PASSWORD": "admin",
-        "HOST": "127.0.0.1",
-        "PORT": "5432",
-    }
+# DATABASES = {
+#      'default': {
+#         "ENGINE": "django.db.backends.postgresql",
+#         "NAME": "e_learning",
+#         "USER": "postgres",
+#         "PASSWORD": "admin",
+#         "HOST": "127.0.0.1",
+#         "PORT": "5432",
+#     }
+# }
+import dj_database_url
+DATABASE={
+    'default':dj_database_url.parse(os.environ.get('DATABASE_URL'))
 }
 
 
