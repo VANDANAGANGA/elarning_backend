@@ -90,7 +90,7 @@ TEMPLATES = [
         },
     },
 ]
-
+ASGI_APPLICATION = "backend.asgi.application" 
 WSGI_APPLICATION = 'backend.wsgi.application'
 
 
@@ -202,7 +202,6 @@ RAZORPAY_KEY_ID='rzp_test_AZRz71dY2SuShj'
 RAZORPAY_KEY_SECRET='r337M5JbaEQLABz0sbY9lqMU'
 
 
-ASGI_APPLICATION = "backend.asgi.application" 
 
 CHANNEL_LAYERS = {
     "default": {
