@@ -16,6 +16,7 @@ from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 
 
 # Quick-start development settings - unsuitable for production
@@ -213,7 +214,6 @@ CHANNEL_LAYERS = {
 }
 
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 
 app = Celery('backend')
 
