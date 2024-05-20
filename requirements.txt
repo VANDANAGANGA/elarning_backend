@@ -30,6 +30,7 @@ djangochannelsrestframework==1.2.0
 djangorestframework==3.14.0
 djangorestframework-simplejwt==5.3.0
 gunicorn==22.0.0
+uvicorn==0.22.0
 hyperlink==21.0.0
 idna==3.6
 incremental==22.10.0
