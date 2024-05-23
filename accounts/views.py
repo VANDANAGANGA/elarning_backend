@@ -141,6 +141,7 @@ class ProfilePic(APIView):
             return Response({'error': str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 #<------------------------------------------------------------------------------------------------------------------------------------------------------------>        
 class CourseCategoryView(APIView):
+    permission_classes = [IsAuthenticated] 
     def post(self,request):
         serializer=CourseCategorySerializer(data=request.data)
         if serializer.is_valid():
