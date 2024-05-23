@@ -63,8 +63,7 @@ class VerifyOTP(APIView):
 
 class UserRegister(APIView):
     parser_classes = (MultiPartParser, FormParser)
-    permission_classes = [AllowAny]
-
+  
     def post(self, request):
         print(request.data,1111111111111111111111111111111111111111111111) 
         serializer = UserRegistrationSerializer(data=request.data)
