@@ -17,6 +17,7 @@ import base64
 from django.db.models import Sum,Count
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import AllowAny
 
 
 
@@ -62,6 +63,7 @@ class VerifyOTP(APIView):
 
 class UserRegister(APIView):
     parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [AllowAny]
 
     def post(self, request):
         print(request.data,1111111111111111111111111111111111111111111111) 
