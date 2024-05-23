@@ -8,5 +8,5 @@ echo "CREATE_SUPERUSER is set to: $CREATE_SUPERUSER"
 
 # Check if CREATE_SUPERUSER variable is set and not empty
 if [[ -n $CREATE_SUPERUSER ]]; then
-  python manage.py createsuperuser --no-input
+  python manage.py createsuperuser 
 fi
