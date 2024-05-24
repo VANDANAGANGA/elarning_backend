@@ -129,6 +129,7 @@ class MyTokenLogoutView(APIView):
             return Response({'detail': 'Invalid refresh token.'}, status=status.HTTP_400_BAD_REQUEST)    
 #<--------------------------------------------------------------------------------------------------------------------------------------------------->
 class ProfilePic(APIView):
+    permission_classes = [IsAuthenticated] 
     def get(self, request):
         try:
             id = request.query_params.get('id')
