@@ -59,7 +59,8 @@ AWS_STORAGE_BUCKET_NAME = 'skillsagabackend'
 AWS_S3_REGION_NAME = 'ap-south-1'  
 AWS_S3_CUSTOM_DOMAIN = f'{AWS_STORAGE_BUCKET_NAME}.s3.amazonaws.com'
 
-MEDIA_URL = f'https://{AWS_S3_CUSTOM_DOMAIN}/'
+MEDIA_URL = 'https://skillsagabackend.s3.amazonaws.com/'
+
 
 
 
