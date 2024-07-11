@@ -5,7 +5,7 @@ from rest_framework import status,generics
 from .serializers import UserRegistrationSerializer,CourseCategorySerializer,TeacherSerializer,CourseSerializer,StudentSerializer,TeacherCourseSerializer,ModuleSerializer,ChapterSerializer,AssignmentSerializer,QuizSerializer,QuestionSerializer,OrderSerializer,StudentCourseSerializer,StudentAssignmentSerializer,StudentQuizSerializer,MasterclassSerializer,SheduleSerializer,RoomSerializer,MessageSerializer,StudentQuizsSerializer,StudentChapterSerializer,StudentCertificateSerializer
 from.models import UserAccount,CourseCategory,Course,TeacherProfile,StudentProfile,Module,Chapter,Assignment,Quiz,Questions,Order,StudentCourse,StudentAssignment,StudentQuiz,Masterclass,Shedule,Room,Message,StudentChapter,StudentCertificate
 import random
-from .serializers import TeacherProfileSerializer,UserSerializer,StudentProfileSerializer,ProfilePicSerializer
+from .serializers import TeacherProfileSerializer,UserSerializer,StudentProfileSerializer,ProfilePicSerializer,PasswordResetSerializer
 from django.core.mail import send_mail
 from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -33,15 +33,11 @@ class GenerateOTP(APIView):
         print(email,1111111111111111111111111)
         if email:
             if UserAccount.objects.filter(email=email).exists():
-                return Response({'error': 'User with this email already exists'}, status=status.HTTP_400_BAD_REQUEST)
-            
-            otp = ''.join([str(random.randint(0, 9)) for _ in range(4)])
-            otp_storage[email] = otp 
-            print(otp,555555555555555555555555555555555)
-            # Send the OTP to the user's email
-            # send_mail('OTP Verification', f'Your OTP is: {otp}', 'vandu.ganga96@gmail.com', [email])
-            print(777777777777777)
-            return Response({'message': 'OTP sent successfully'}, status=status.HTTP_200_OK)
+                otp = ''.join([str(random.randint(0, 9)) for _ in range(4)])
+                otp_storage[email] = otp 
+                send_mail('OTP Verification', f'Your OTP is: {otp}', 'vandu.ganga96@gmail.com', [email])
+                print(777777777777777)
+                return Response({'message': 'OTP sent successfully'}, status=status.HTTP_200_OK)
         else:
             return Response({'error': 'Invalid email'}, status=status.HTTP_400_BAD_REQUEST)
 
@@ -80,6 +76,23 @@ class UserRegister(APIView):
         users = UserAccount.objects.all()
         serializer = UserRegistrationSerializer(users, many=True)
         return Response(serializer.data)
+#<--------------------------------------------------------------------------------------------------------------> 
+class UpdatePasswordView(APIView):
+    def put(self, request):
+        try:
+            email = request.data.get('email')
+            serializer = PasswordResetSerializer(data=request.data)
+
+            if serializer.is_valid():
+                password = serializer.validated_data['password']
+                user = UserAccount.objects.get(email=email)
+                user.set_password(password)
+                user.save()
+                return Response({'detail': 'Password updated successfully.'}, status=status.HTTP_200_OK)
+            else:
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except UserAccount.DoesNotExist:
+            return Response({'detail': 'Teacher not found.'}, status=status.HTTP_404_NOT_FOUND)
 #<----------------------------------------------------Registration End ------------------------------------------>
 # <--------------------------------------------------Login Start ------------------------------------------------->
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
