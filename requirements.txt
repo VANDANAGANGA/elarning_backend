@@ -34,6 +34,7 @@ hyperlink==21.0.0
 idna==3.6
 incremental==22.10.0
 kombu==5.3.5
+moviepy==1.0.3
 msgpack==1.0.7
 phonenumbers==8.13.22
 Pillow==10.0.1
