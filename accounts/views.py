@@ -20,6 +20,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
 from moviepy.editor import VideoFileClip
 from django.conf import settings
+import boto3
 
 
 
@@ -218,10 +219,21 @@ class CourseView(APIView):
             chapters=Chapter.objects.filter(module__course=course)
             students=StudentCourse.objects.filter(course=course).count()
             total_duration = 0.0
+            s3 = boto3.client('s3',
+            aws_access_key_id=settings.AWS_ACCESS_KEY_ID,
+            aws_secret_access_key=settings.AWS_SECRET_ACCESS_KEY,
+            region_name=settings.AWS_S3_REGION_NAME
+            )
             for chapter in chapters:
-               video_path = settings.MEDIA_ROOT + str(chapter.video)
-               clip = VideoFileClip(video_path)
-               total_duration += clip.duration
+                video_path = str(chapter.video)
+                try:
+                    s3_response_object = s3.get_object(Bucket=settings.AWS_STORAGE_BUCKET_NAME, Key=video_path)
+                    video_content = s3_response_object['Body'].read()
+                    video_bytes = BytesIO(video_content)
+                    clip = VideoFileClip(video_bytes)
+                    total_duration += clip.duration
+                except Exception as e:
+                    print(f"Error loading video from S3 {video_path}: {e}")
             print(8888888888888888888888888888888888888888)
             serialized_course['category'] = category_icon
             serialized_course['teacher'] = teacher_name
