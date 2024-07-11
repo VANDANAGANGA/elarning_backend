@@ -191,7 +191,7 @@ class CourseView(APIView):
             return category.icon_url
         except CourseCategory.DoesNotExist:
             return None
-     @staticmethod    
+    @staticmethod    
     def get_teacher_profile(teacher_id):
         try:
             teacher = TeacherProfile.objects.get(id=teacher_id)
