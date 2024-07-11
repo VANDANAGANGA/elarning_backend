@@ -26,7 +26,7 @@ os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'backend.settings')
 SECRET_KEY = 'django-insecure-p7-#3p^cq00a!(gm2a%p#+7wtuxnos&*f@$ujxo(oa10#o(^6c'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = os.environ.get('DEBUG', 'True')
 
 ALLOWED_HOSTS = ['*']
 
@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'corsheaders',
     'rest_framework_simplejwt',
+    'rest_framework_simplejwt.token_blacklist',
     'accounts',
     'django_celery_beat',
     'django_celery_results',
@@ -180,8 +181,8 @@ from datetime import timedelta
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
-    'ROTATE_REFRESH_TOKENS': False,
-    'BLACKLIST_AFTER_ROTATION': False,
+    'ROTATE_REFRESH_TOKENS': True,
+    'BLACKLIST_AFTER_ROTATION': True,
     'UPDATE_LAST_LOGIN': False,
 
     'ALGORITHM': 'HS256',
@@ -213,13 +214,13 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587  # Replace with the appropriate port (e.g., 587 for TLS, 465 for SSL)
 EMAIL_USE_TLS = True  # Use TLS (or False if using SSL)
-EMAIL_HOST_USER = 'vandu.ganga96@gmail.com'
-EMAIL_HOST_PASSWORD = 'tekl jhxe xjwy hdor'
+EMAIL_HOST_USER = DEBUG = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
 
 
-RAZORPAY_KEY_ID='rzp_test_AZRz71dY2SuShj'
-RAZORPAY_KEY_SECRET='r337M5JbaEQLABz0sbY9lqMU'
+RAZORPAY_KEY_ID=os.environ.get('RAZORPAY_KEY_ID')
+RAZORPAY_KEY_SECRET=os.environ.get('RAZORPAY_KEY_SECRET')
 
 
 CHANNEL_LAYERS = {
