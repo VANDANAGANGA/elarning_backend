@@ -21,6 +21,7 @@ from rest_framework.permissions import AllowAny
 from moviepy.editor import VideoFileClip
 from django.conf import settings
 import boto3
+from io import BytesIO
 
 
 
