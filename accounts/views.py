@@ -18,7 +18,8 @@ from django.db.models import Sum,Count
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.permissions import AllowAny
-
+from moviepy.editor import VideoFileClip
+from django.conf import settings
 
 
 
@@ -190,7 +191,13 @@ class CourseView(APIView):
             return category.icon_url
         except CourseCategory.DoesNotExist:
             return None
-
+     @staticmethod    
+    def get_teacher_profile(teacher_id):
+        try:
+            teacher = TeacherProfile.objects.get(id=teacher_id)
+            return teacher.user.profile_pic.url
+        except TeacherProfile.DoesNotExist:
+            return None
     @staticmethod
     def get_teacher_name(teacher_id):
         try:
@@ -206,9 +213,22 @@ class CourseView(APIView):
             serialized_course = CourseSerializer(course).data
             category_icon = self.get_category_name(course.category.id)
             teacher_name = self.get_teacher_name(course.teacher.id)
+            teacher_pic = self.get_teacher_profile(course.teacher.id)
+            total_chapters = Chapter.objects.filter(module__course=course).count()
+            chapters=Chapter.objects.filter(module__course=course)
+            students=StudentCourse.objects.filter(course=course).count()
+            total_duration = 0.0
+            for chapter in chapters:
+               video_path = settings.MEDIA_ROOT + str(chapter.video)
+               clip = VideoFileClip(video_path)
+               total_duration += clip.duration
             print(8888888888888888888888888888888888888888)
             serialized_course['category'] = category_icon
             serialized_course['teacher'] = teacher_name
+            serialized_course['pic'] = teacher_pic
+            serialized_course['chapter'] = total_chapters
+            serialized_course['duration'] = int(total_duration)
+            serialized_course['students'] = students
 
             course_data.append(serialized_course)
             
@@ -257,7 +277,7 @@ class CourseDetailsAPIView(APIView):
                 'module': module_serializer.data,
                 'chapters': chapter_serializer.data
             })
-            response_data = {
+        response_data = {
             'course': course_serializer.data,
             'teacher':teacher_serializer.data,
             'modules': module_data,
