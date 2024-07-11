@@ -256,4 +256,13 @@ class StudentChapterSerializer(serializers.ModelSerializer):
 class StudentCertificateSerializer(serializers.ModelSerializer):
     class Meta:
         model = StudentCertificate
-        fields = '__all__'                 
+        fields = '__all__'     
+        
+class PasswordResetSerializer(serializers.Serializer):
+    password = serializers.CharField(min_length=6)
+    confirmpassword = serializers.CharField(min_length=6)
+
+    def validate(self, data):
+        if data['password'] != data['password']:
+            raise serializers.ValidationError("Passwords do not match.")
+        return data
